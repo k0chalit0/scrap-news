@@ -11,10 +11,10 @@ import base64
 
 path = "http://lostiempos.com"
 client = requests.Session()
-#url = sys.argv[1]
-#page = sys.argv[2]
+# SOLO ÚLTIMAS NOTICIAS #
 url = 'http://lostiempos.com/ultimas-noticias'
 page = '0'
+#page = sys.argv[1]
 
 html = client.get(url+'?page='+page)
 soup = BeautifulSoup(html.content, 'html.parser')
