@@ -13,10 +13,12 @@ path = "http://lostiempos.com"
 client = requests.Session()
 # SOLO ÚLTIMAS NOTICIAS #
 url = 'http://lostiempos.com/ultimas-noticias'
-page = '0'
-#page = sys.argv[1]
+try:
+	page = sys.argv[1]
+except IndexError:
+	page = 0
 
-html = client.get(url+'?page='+page)
+html = client.get(url+'?page='+str(page))
 soup = BeautifulSoup(html.content, 'html.parser')
 
 news = soup.select(".noticias-lt-block .views-row")
@@ -33,7 +35,10 @@ for new in news:
 	titleNewUrl = titleNew.get('href')
 
 	resumeNew = new.select(".views-field-field-noticia-sumario .field-content")[0].string
-	picNew = new.select(".views-field-field-noticia-fotos .field-content img")[0].get('src')
+	if not (new.select(".views-field-field-noticia-fotos .field-content img")):
+		picNew = 'http://www.lostiempos.com/sites/all/themes/lt_theme/logo.png'
+	else:
+		picNew = new.select(".views-field-field-noticia-fotos .field-content img")[0].get('src')
 
 	newArray = {
 		'title':titleNewText,
